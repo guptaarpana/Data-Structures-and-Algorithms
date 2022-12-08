@@ -5,11 +5,26 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
+  bool dfs(int i, vector<bool>& visited, vector<bool>& dfsvisited, vector<int> adj[]) {
+        visited[i]=true;
+        dfsvisited[i]=true;
+        for(int j: adj[i]) {
+            if(!visited[j]) {
+                bool ans = dfs(j, visited,dfsvisited, adj);
+                if(ans) return true;
+            }
+            else if(dfsvisited[j])
+                return true;
+        }
+        dfsvisited[i]=false;
+        return false;
+    }
+ 
     // Function to detect cycle in a directed graph.
     bool isCyclic(int V, vector<int> adj[]) {
         // code here
         //Calculate indegree
-	    vector<int>inorder(V,0);
+	    /*vector<int>inorder(V,0);
 	    for(int i=0;i<V;i++){
 	        for(auto it : adj[i]){
 	            inorder[it]++;
@@ -35,7 +50,17 @@ class Solution {
 	            if(inorder[it]==0) q.push(it);
 	        }
 	    }
-	    return (cnt!=V);
+	    return (cnt!=V);*/
+	    
+	    bool ans;
+        vector<bool> visited(V, false);
+        vector<bool> dfsvisited(V, false);
+        for(int i=0;i<V;i++) {
+            if(!visited[i])
+                ans = dfs(i, visited, dfsvisited, adj);
+                if(ans) return true;
+        }
+        return ans;
     }
 };
 
